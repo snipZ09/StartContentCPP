@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "StartContentCPP/Types/SpeedMode.h"
 #include "CombatCharacter.generated.h"
 
 class USpringArmComponent;
@@ -27,8 +28,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Pressed
 	virtual void AttackButtonPressed();
+	virtual void SprintButtonPressed();
 
+	//Released
+	virtual void SprintButtonReleased();
+
+	//Axises
 	virtual void MoveForward(float Value);
 	virtual void MoveRight(float Value);
 	virtual void LookUp(float Value);
@@ -39,6 +46,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* FollowCamera;
+
+	UPROPERTY()
+	ESpeedMode SpeedMode;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float SprintSpeed = 900.f;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float JogSpeed = 700.f;
 //setter getter
 public:	
 	

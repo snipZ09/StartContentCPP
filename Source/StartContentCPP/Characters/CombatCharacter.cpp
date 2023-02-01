@@ -39,6 +39,11 @@ void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	//BindAction (Tên action trong setting, event nhấn hay thả, đối tượng liên hệ event, reference của func sẽ thực hiện)
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &ACombatCharacter::AttackButtonPressed);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ACombatCharacter::SprintButtonPressed);
+
+	//Release
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ACombatCharacter::SprintButtonReleased);
+
 
 	//BindAxis (Tên axis trong setting, đối tượng liên hệ, ref của func sẽ thực hiện)
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACombatCharacter::MoveForward);
@@ -51,12 +56,25 @@ void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void ACombatCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SpeedMode = ESpeedMode::ESM_Jog;
+	GetCharacterMovement()->MaxWalkSpeed = JogSpeed;
 }
 
 void ACombatCharacter::AttackButtonPressed()
 {
 
+}
+
+void ACombatCharacter::SprintButtonPressed()
+{
+	SpeedMode = ESpeedMode::ESM_Sprint;
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void ACombatCharacter::SprintButtonReleased()
+{
+	SpeedMode = ESpeedMode::ESM_Jog;
+	GetCharacterMovement()->MaxWalkSpeed = JogSpeed;
 }
 
 void ACombatCharacter::MoveForward(float Value)
