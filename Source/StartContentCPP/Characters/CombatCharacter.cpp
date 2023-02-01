@@ -66,6 +66,11 @@ void ACombatCharacter::PostInitializeComponents()
 	}
 }
 
+UCombatComponent* ACombatCharacter::GetCombat_Implementation() const
+{
+	return CombatComponent;
+}
+
 // Called when the game starts or when spawned
 void ACombatCharacter::BeginPlay()
 {
