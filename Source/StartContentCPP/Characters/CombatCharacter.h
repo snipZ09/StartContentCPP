@@ -9,6 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UCombatComponent;
 UCLASS()
 class STARTCONTENTCPP_API ACombatCharacter : public ACharacter
 {
@@ -29,6 +30,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	//Pressed
+	UFUNCTION(BlueprintCallable)
 	virtual void AttackButtonPressed();
 	virtual void SprintButtonPressed();
 
@@ -55,6 +57,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Movement)
 	float JogSpeed = 700.f;
+
+	UPROPERTY(VisibleAnywhere)
+	UCombatComponent* CombatComponent;
+
 //setter getter
 public:	
 	

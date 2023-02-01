@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "StartContentCPP/MyComponents/CombatComponent.h"
+
 // Sets default values
 ACombatCharacter::ACombatCharacter()
 {
@@ -30,6 +32,9 @@ ACombatCharacter::ACombatCharacter()
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->GravityScale = 1.7f;
 	GetCharacterMovement()->AirControl = 0.35f;
+
+	//Components
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 }
 
 // Called to bind functionality to input
@@ -62,7 +67,7 @@ void ACombatCharacter::BeginPlay()
 
 void ACombatCharacter::AttackButtonPressed()
 {
-
+	CombatComponent->RequestAttack();
 }
 
 void ACombatCharacter::SprintButtonPressed()
