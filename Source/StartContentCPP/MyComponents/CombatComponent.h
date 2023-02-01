@@ -7,7 +7,8 @@
 #include "StartContentCPP/Types/CombatState.h"
 #include "CombatComponent.generated.h"
 
-
+class UAnimMontage;
+class ACharacter;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STARTCONTENTCPP_API UCombatComponent : public UActorComponent
 {
@@ -22,6 +23,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RequestAttack();
 
+	void PlayAnimMontage(UAnimMontage* MontageToPlay);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -32,7 +35,14 @@ private:
 	UPROPERTY()
 	ECombatState CombatState;
 
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	TArray<UAnimMontage*> AttackAnimMontages;
+
+	UPROPERTY()
+	ACharacter* Character;
+
+//Getter and Setter
 public:	
-	
+	FORCEINLINE void SetCharacter(ACharacter* Value) { Character = Value; }
 		
 };

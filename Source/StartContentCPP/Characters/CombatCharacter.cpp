@@ -57,6 +57,15 @@ void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("Turn", this, &ACombatCharacter::Turn);
 }
 
+void ACombatCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if(CombatComponent)
+	{
+		CombatComponent->SetCharacter(this);
+	}
+}
+
 // Called when the game starts or when spawned
 void ACombatCharacter::BeginPlay()
 {

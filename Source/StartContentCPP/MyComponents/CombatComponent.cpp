@@ -2,6 +2,8 @@
 
 
 #include "CombatComponent.h"
+#include "GameFramework/Character.h"
+#include "Animation/AnimInstance.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
@@ -18,22 +20,37 @@ void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	CombatState = ECombatState::ECS_Free;
 	
 }
 
 void UCombatComponent::RequestAttack()
 {
-	if(CombatState == ECombatState::ECS_Free)
+	if(CombatState == ECombatState::ECS_Free && AttackAnimMontages.IsEmpty() == false)
 	{
 		Attack();
 	}
 }
 
-
-
-
 void UCombatComponent::Attack()
 {
+	UAnimMontage* MontageToPlay = AttackAnimMontages[0];
+	if(MontageToPlay)
+	{
+		PlayAnimMontage(MontageToPlay);
+		CombatState = ECombatState::ECS_Attacking;
+	}
+}
 
+void UCombatComponent::PlayAnimMontage(UAnimMontage* MontageToPlay)
+{
+	if(Character == nullptr)
+	{
+		return;
+	}
+	UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+	if(AnimInstance && MontageToPlay)
+	{
+		AnimInstance->Montage_Play(MontageToPlay);
+	}
 }
