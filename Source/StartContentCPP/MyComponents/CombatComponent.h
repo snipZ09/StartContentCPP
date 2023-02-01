@@ -23,10 +23,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RequestAttack();
 
+	bool CanAttack();
+
 	void PlayAnimMontage(UAnimMontage* MontageToPlay);
 
 	UFUNCTION(BlueprintCallable)
 	void ResetCombat();
+
+	UFUNCTION(BlueprintCallable)
+	void ContinueCombo();
 
 protected:
 	// Called when the game starts
@@ -43,6 +48,9 @@ private:
 
 	UPROPERTY()
 	ACharacter* Character;
+
+	bool bIsReachedContinueAttackPoint = false;
+	int32 AttackIndex = 0;
 
 //Getter and Setter
 public:	
