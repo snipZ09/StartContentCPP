@@ -54,3 +54,8 @@ void UCombatComponent::PlayAnimMontage(UAnimMontage* MontageToPlay)
 		AnimInstance->Montage_Play(MontageToPlay);
 	}
 }
+
+void UCombatComponent::ResetCombat()
+{
+	CombatState = ECombatState::ECS_Free;
+}

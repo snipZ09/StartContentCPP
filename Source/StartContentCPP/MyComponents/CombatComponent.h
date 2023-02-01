@@ -25,6 +25,9 @@ public:
 
 	void PlayAnimMontage(UAnimMontage* MontageToPlay);
 
+	UFUNCTION(BlueprintCallable)
+	void ResetCombat();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
