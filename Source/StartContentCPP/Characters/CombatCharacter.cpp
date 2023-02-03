@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "StartContentCPP/MyComponents/CombatComponent.h"
+#include "StartContentCPP/MyComponents/CollisionComponent.h"
 
 // Sets default values
 ACombatCharacter::ACombatCharacter()
@@ -35,6 +36,7 @@ ACombatCharacter::ACombatCharacter()
 
 	//Components
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	CollisionComponent = CreateDefaultSubobject<UCollisionComponent>(TEXT("CollisionComponent"));
 }
 
 // Called to bind functionality to input
@@ -64,11 +66,20 @@ void ACombatCharacter::PostInitializeComponents()
 	{
 		CombatComponent->SetCharacter(this);
 	}
+	if (CollisionComponent)
+	{
+		CollisionComponent->SetCharacter(this);
+	}
 }
 
 UCombatComponent* ACombatCharacter::GetCombat_Implementation() const
 {
 	return CombatComponent;
+}
+
+UCollisionComponent* ACombatCharacter::GetCollision_Implementation() const
+{
+	return CollisionComponent;
 }
 
 // Called when the game starts or when spawned

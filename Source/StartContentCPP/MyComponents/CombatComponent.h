@@ -55,5 +55,4 @@ private:
 //Getter and Setter
 public:	
 	FORCEINLINE void SetCharacter(ACharacter* Value) { Character = Value; }
-		
 };
