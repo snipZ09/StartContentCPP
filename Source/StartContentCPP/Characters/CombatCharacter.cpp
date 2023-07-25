@@ -9,6 +9,8 @@
 #include "StartContentCPP/MyComponents/CollisionComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+//
+#include "StartContentCPP/PlayerController/CombatPlayerController.h"
 
 // Sets default values
 ACombatCharacter::ACombatCharacter()
@@ -83,6 +85,13 @@ void ACombatCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = JogSpeed;
 	OnTakePointDamage.AddDynamic(this, &ACombatCharacter::OnReceivedPointDamage);
 
+	// HUD
+	ACombatPlayerController* CombatPlayerController = Cast<ACombatPlayerController>(GetController());
+	if(CombatPlayerController)
+	{
+		CombatPlayerController->CreateCombatWidget();
+		CombatPlayerController->AddCombatWidgetToViewport();
+	}
 }
 
 UCombatComponent* ACombatCharacter::GetCombat_Implementation() const
@@ -126,16 +135,6 @@ void ACombatCharacter::OnReceivedPointDamage(AActor* DamagedActor, float Damage,
 	PlayAnimMontage(HitReactMontage);
 	// Change combat state
 	CombatComponent->SetCombatState(ECombatState::ECS_Hitted);
-}
-
-// Event fire when someone hit you
-void ACombatCharacter::PlayAnimMontage(UAnimMontage* MontageToPlay)
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && MontageToPlay)
-	{
-		AnimInstance->Montage_Play(MontageToPlay);
-	}
 }
 
 void ACombatCharacter::AttackButtonPressed()
