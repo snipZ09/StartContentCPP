@@ -12,6 +12,11 @@ class USpringArmComponent;
 class UCameraComponent;
 class UCombatComponent;
 class UCollisionComponent;
+
+class USoundCue;
+class UParticleSystem;
+class UAnimMontage;
+
 UCLASS()
 class STARTCONTENTCPP_API ACombatCharacter : public ACharacter, public IAttackableInterface
 {
@@ -29,6 +34,15 @@ public:
 	UCombatComponent* GetCombat_Implementation() const;
 	UCollisionComponent* GetCollision_Implementation() const;
 
+	UFUNCTION()
+	void OnHitActor(const FHitResult& HitResult);
+
+	UFUNCTION()
+	void OnReceivedPointDamage(AActor* DamagedActor, float Damage, class AController* InstigatedBy, FVector HitLocation,
+	                           class UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection,
+	                           const class UDamageType* DamageType, AActor* DamageCauser);
+
+	void PlayAnimMontage(UAnimMontage* MontageToPlay);
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,6 +61,7 @@ protected:
 	virtual void MoveRight(float Value);
 	virtual void LookUp(float Value);
 	virtual void Turn(float Value);
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	USpringArmComponent* CameraBoom;
@@ -69,9 +84,17 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UCollisionComponent* CollisionComponent;
 
-//setter getter
-public:	
-	FORCEINLINE UFUNCTION(BlueprintCallable) UCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
-	
+	//Hitted
+	UPROPERTY(EditAnywhere, Category = Hitted)
+	USoundCue* HitSound;
+	UPROPERTY(EditAnywhere, Category = Hitted)
+	UParticleSystem* HitImpact;
+	UPROPERTY(EditAnywhere, Category = Hitted)
+	UAnimMontage* HitReactMontage;
+
+	//setter getter 
+public:
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UCombatComponent* GetCombatComponent() const { return CombatComponent; }
 };

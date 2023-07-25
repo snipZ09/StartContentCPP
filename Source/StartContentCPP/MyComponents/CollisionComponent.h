@@ -6,8 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "CollisionComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHitActorDelegate, const FHitResult&, HitResult);
 class ACharacter;
-class AActors;
+class AActor;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STARTCONTENTCPP_API UCollisionComponent : public UActorComponent
 {
@@ -26,6 +27,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TraceCollision();
+
+	FHitActorDelegate HitActorDelegate;
 
 protected:
 	// Called when the game starts
@@ -50,6 +53,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TArray<AActor*> ActorsToIgnore;
+
+	UPROPERTY()
+	TArray<AActor*> HittedActors;
+
+	UPROPERTY(EditAnywhere)
+	bool bDebug;
 
 public:	
 	FORCEINLINE void SetCharacter(ACharacter* Value) { Character = Value; }

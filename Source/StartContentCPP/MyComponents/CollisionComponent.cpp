@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "CollisionComponent.h"
@@ -22,9 +22,9 @@ UCollisionComponent::UCollisionComponent()
 void UCollisionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if(GetOwner())
+	if (GetOwner())
 	{
-		ActorsToIgnore.Emplace(Character);
+		ActorsToIgnore.Emplace(GetOwner());
 	}
 
 }
@@ -49,6 +49,7 @@ void UCollisionComponent::EnableCollision()
 void UCollisionComponent::DisableCollision()
 {
 	bIsEnablingCollision = false;
+	HittedActors.Empty();
 }
 
 void UCollisionComponent::TraceCollision()
@@ -63,7 +64,7 @@ void UCollisionComponent::TraceCollision()
 	FVector EndLocation = Character->GetMesh()->GetSocketLocation(EndSocketName);
 
 	// Start of sword -> End of Sword
-	UKismetSystemLibrary::SphereTraceMultiForObjects
+	bool bHiSomething = UKismetSystemLibrary::SphereTraceMultiForObjects
 	(
 		Character,
 		StartLocation,
@@ -72,11 +73,30 @@ void UCollisionComponent::TraceCollision()
 		TraceObjectTypes,
 		true,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		bDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None,
 		HitResults,
 		true,
 		FLinearColor::Red,
 		FLinearColor::Green
 	);
+
+	if (bHiSomething)
+	{
+		for (FHitResult HR : HitResults)
+		{
+			if (HR.bBlockingHit)
+			{
+				if (HR.GetActor())
+				{
+					// Lưu vào mảng Hitted Actors
+					if (HittedActors.Contains(HR.GetActor()) == false)
+					{
+						HittedActors.Emplace(HR.GetActor());
+						HitActorDelegate.Broadcast(HR);
+					}
+				}
+			}
+		}
+	}
 }
 

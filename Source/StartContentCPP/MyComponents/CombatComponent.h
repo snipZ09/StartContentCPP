@@ -9,29 +9,29 @@
 
 class UAnimMontage;
 class ACharacter;
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class STARTCONTENTCPP_API UCombatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UCombatComponent();
 	// Called every frame
 	//virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	void RequestAttack();
+		void RequestAttack();
 
 	bool CanAttack();
 
 	void PlayAnimMontage(UAnimMontage* MontageToPlay);
 
 	UFUNCTION(BlueprintCallable)
-	void ResetCombat();
+		void ResetCombat();
 
 	UFUNCTION(BlueprintCallable)
-	void ContinueCombo();
+		void ContinueCombo();
 
 protected:
 	// Called when the game starts
@@ -41,18 +41,21 @@ protected:
 
 private:
 	UPROPERTY()
-	ECombatState CombatState;
+		ECombatState CombatState;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
-	TArray<UAnimMontage*> AttackAnimMontages;
+		TArray<UAnimMontage*> AttackAnimMontages;
 
 	UPROPERTY()
-	ACharacter* Character;
+		ACharacter* Character;
 
 	bool bIsReachedContinueAttackPoint = false;
 	int32 AttackIndex = 0;
 
-//Getter and Setter
-public:	
+	//Getter and Setter
+public:
 	FORCEINLINE void SetCharacter(ACharacter* Value) { Character = Value; }
+
+	FORCEINLINE void SetCombatState(ECombatState Value) { CombatState = Value; }
+	FORCEINLINE ECombatState GetCombatState() const { return CombatState; }
 };
